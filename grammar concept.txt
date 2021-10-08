@@ -1,0 +1,9 @@
+program: list of functions
+
+function: monadic blocks or statements
+
+monadic block: statements ending with #
+
+statements: list of let ins
+
+let in: optional return value and an expression
