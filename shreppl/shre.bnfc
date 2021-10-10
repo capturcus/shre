@@ -1,0 +1,11 @@
+rules Program ::= Function | Function Program ;
+
+rules Function ::= Ident ArgList "->" Ident ":" LetIns ;
+rules ArgList ::= Ident | Ident ArgList ;
+
+rules LetIns ::= LetIn OptionalHash "\n" | LetIn OptionalHash "\n" LetIns ;
+rules OptionalHash ::=  | "#" ;
+
+rules LetIn ::= Ident "=" Expr | Expr ;
+
+rules Expr ::= Ident | Integer | Double | String ;

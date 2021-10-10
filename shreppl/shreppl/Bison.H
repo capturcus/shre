@@ -34,14 +34,14 @@
 /* Undocumented macros, especially those whose name start with YY_,
    are private implementation details.  Do not rely on them.  */
 
-#ifndef YY_YY_SHRE_TAB_H_INCLUDED
-# define YY_YY_SHRE_TAB_H_INCLUDED
+#ifndef YY_SHRE_BISON_H_INCLUDED
+# define YY_SHRE_BISON_H_INCLUDED
 /* Debug traces.  */
 #ifndef YYDEBUG
-# define YYDEBUG 0
+# define YYDEBUG 1
 #endif
 #if YYDEBUG
-extern int yydebug;
+extern int shre_debug;
 #endif
 
 /* Token type.  */
@@ -49,26 +49,60 @@ extern int yydebug;
 # define YYTOKENTYPE
   enum yytokentype
   {
-    NUMBER = 258,
-    ADD = 259,
-    SUB = 260,
-    MUL = 261,
-    DIV = 262,
-    ABS = 263,
-    EOL = 264
+    _ERROR_ = 258,
+    _HASH = 259,
+    _RARROW = 260,
+    _COLON = 261,
+    _EQ = 262,
+    _STRING_ = 263,
+    _INTEGER_ = 264,
+    _DOUBLE_ = 265,
+    _IDENT_ = 266
   };
 #endif
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
-typedef int YYSTYPE;
+union YYSTYPE
+{
+#line 50 "shre.y"
+
+  int    _int;
+  char   _char;
+  double _double;
+  char*  _string;
+  Program* program_;
+  Function* function_;
+  ArgList* arglist_;
+  LetIns* letins_;
+  OptionalHash* optionalhash_;
+  LetIn* letin_;
+  Expr* expr_;
+
+#line 83 "Bison.H"
+
+};
+typedef union YYSTYPE YYSTYPE;
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1
 #endif
 
+/* Location type.  */
+#if ! defined YYLTYPE && ! defined YYLTYPE_IS_DECLARED
+typedef struct YYLTYPE YYLTYPE;
+struct YYLTYPE
+{
+  int first_line;
+  int first_column;
+  int last_line;
+  int last_column;
+};
+# define YYLTYPE_IS_DECLARED 1
+# define YYLTYPE_IS_TRIVIAL 1
+#endif
 
-extern YYSTYPE yylval;
 
-int yyparse (void);
 
-#endif /* !YY_YY_SHRE_TAB_H_INCLUDED  */
+int shre_parse (yyscan_t scanner, YYSTYPE *result);
+
+#endif /* !YY_SHRE_BISON_H_INCLUDED  */
