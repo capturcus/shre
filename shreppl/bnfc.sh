@@ -1,3 +1,3 @@
 #!/bin/bash
 
-bnfc -m -o shreppl shre.bnfc
+bnfc --cpp -m -o shreppl shre.bnfc

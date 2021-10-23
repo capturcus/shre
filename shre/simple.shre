@@ -1,10 +1,10 @@
-function000 x y -> x:
+function000 x y -> x :;
 a;
 ;
-function111 b c:
+function111 b c:;
 a;
 ;
-function_other asd -> asd:
+function_other asd -> asd:;
 a = b #;
 siemka tasiemka #;
 siemka.get tasiemka.asd;

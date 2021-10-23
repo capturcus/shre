@@ -2,16 +2,26 @@ ProgramRoot. Program ::= [Function] ;
 
 separator Function ";" ;
 
-rules Function ::= Ident [FuncArgDecl] "->" [FuncArgDecl] ":" [LetIn] | Ident [FuncArgDecl] ":" [LetIn] ;
-separator FuncArgDecl "";
-rules FuncArgDecl ::= Ident;
+separator nonempty Ident "";
+
+rules Function ::= Ident [FuncArgDecl] "->" Type ":;" [LetIn] | Ident [FuncArgDecl] ":;" [LetIn] ;
+separator nonempty FuncArgDecl "";
+rules FuncArgDecl ::= Ident | Ident ":" Type ;
+rules Type ::= Ident | Type Ident ;
 
 rules StructSelector ::= Ident | StructSelector "." Ident ;
-rules Selector ::= StructSelector | Ident ":" StructSelector ;
+
+rules PackageQualifier ::= 
+     "\\"
+    | PackageQualifier Ident "\\" ;
+
+rules Selector ::= PackageQualifier StructSelector | StructSelector ;
 
 separator LetIn ";" ;
 
-rules LetIn ::= Selector "=" Expr | Expr ;
+rules LetIn ::= 
+      Selector "=" Expr
+    | Expr ;
 
 ExprInt. Expr ::= Integer ;
 ExprDouble. Expr ::= Double ;
