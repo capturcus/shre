@@ -2,7 +2,7 @@ ProgramRoot. Program ::= [Function] ;
 
 separator Function ";" ;
 
-rules Function ::= Ident [FuncArgDecl] "->" Ident ":" [LetIn] | Ident [FuncArgDecl] ":" [LetIn] ;
+rules Function ::= Ident [FuncArgDecl] "->" [FuncArgDecl] ":" [LetIn] | Ident [FuncArgDecl] ":" [LetIn] ;
 separator FuncArgDecl "";
 rules FuncArgDecl ::= Ident;
 
@@ -16,12 +16,14 @@ rules LetIn ::= Selector "=" Expr | Expr ;
 ExprInt. Expr ::= Integer ;
 ExprDouble. Expr ::= Double ;
 ExprString. Expr ::= String ;
-ExprFuncCall. Expr ::= FuncCall OptionalHash ;
+ExprFuncCall. Expr ::= FuncCall ;
 ExprParen. Expr ::= "(" Expr ")" ;
 ExprPipe. Expr ::= Expr "|" Expr ;
 
-rules FuncCall ::= Selector FuncCallArgList  ;
-rules OptionalHash ::= | "#" ;
+rules FuncCall ::= 
+     Selector FuncCallArgList "#" 
+    | Selector FuncCallArgList 
+    | Selector "#"
+    | Selector ;
 FuncCallArgListContinue. FuncCallArgList ::= Expr FuncCallArgList ;
 FuncCallArgListExpr. FuncCallArgList ::= Expr ;
-FuncCallArgListEnd. FuncCallArgList ::= ;

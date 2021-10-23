@@ -57,7 +57,7 @@ All other symbols are terminals.
   | //[Function]// | -> | **eps**
   |  |  **|**  | //Function//
   |  |  **|**  | //Function// ``;`` //[Function]//
-  | //Function// | -> | //Ident// //[FuncArgDecl]// ``->`` //Ident// ``:`` //[LetIn]//
+  | //Function// | -> | //Ident// //[FuncArgDecl]// ``->`` //[FuncArgDecl]// ``:`` //[LetIn]//
   |  |  **|**  | //Ident// //[FuncArgDecl]// ``:`` //[LetIn]//
   | //[FuncArgDecl]// | -> | **eps**
   |  |  **|**  | //FuncArgDecl// //[FuncArgDecl]//
@@ -74,15 +74,15 @@ All other symbols are terminals.
   | //Expr// | -> | //Integer//
   |  |  **|**  | //Double//
   |  |  **|**  | //String//
-  |  |  **|**  | //FuncCall// //OptionalHash//
+  |  |  **|**  | //FuncCall//
   |  |  **|**  | ``(`` //Expr// ``)``
   |  |  **|**  | //Expr// ``|`` //Expr//
-  | //FuncCall// | -> | //Selector// //FuncCallArgList//
-  | //OptionalHash// | -> | **eps**
-  |  |  **|**  | ``#``
+  | //FuncCall// | -> | //Selector// //FuncCallArgList// ``#``
+  |  |  **|**  | //Selector// //FuncCallArgList//
+  |  |  **|**  | //Selector// ``#``
+  |  |  **|**  | //Selector//
   | //FuncCallArgList// | -> | //Expr// //FuncCallArgList//
   |  |  **|**  | //Expr//
-  |  |  **|**  | **eps**
 
 
 

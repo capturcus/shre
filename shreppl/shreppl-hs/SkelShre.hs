@@ -25,7 +25,7 @@ transProgram x = case x of
 
 transFunction :: AbsShre.Function -> Result
 transFunction x = case x of
-  AbsShre.Function1 ident1 funcargdecls ident2 letins -> failure x
+  AbsShre.Function1 ident funcargdecls1 funcargdecls2 letins -> failure x
   AbsShre.Function2 ident funcargdecls letins -> failure x
 
 transFuncArgDecl :: AbsShre.FuncArgDecl -> Result
@@ -52,21 +52,18 @@ transExpr x = case x of
   AbsShre.ExprInt integer -> failure x
   AbsShre.ExprDouble double -> failure x
   AbsShre.ExprString string -> failure x
-  AbsShre.ExprFuncCall funccall optionalhash -> failure x
+  AbsShre.ExprFuncCall funccall -> failure x
   AbsShre.ExprParen expr -> failure x
   AbsShre.ExprPipe expr1 expr2 -> failure x
 
 transFuncCall :: AbsShre.FuncCall -> Result
 transFuncCall x = case x of
   AbsShre.FuncCall1 selector funccallarglist -> failure x
-
-transOptionalHash :: AbsShre.OptionalHash -> Result
-transOptionalHash x = case x of
-  AbsShre.OptionalHash1 -> failure x
-  AbsShre.OptionalHash2 -> failure x
+  AbsShre.FuncCall2 selector funccallarglist -> failure x
+  AbsShre.FuncCall3 selector -> failure x
+  AbsShre.FuncCallSelector selector -> failure x
 
 transFuncCallArgList :: AbsShre.FuncCallArgList -> Result
 transFuncCallArgList x = case x of
   AbsShre.FuncCallArgListContinue expr funccallarglist -> failure x
   AbsShre.FuncCallArgListExpr expr -> failure x
-  AbsShre.FuncCallArgListEnd -> failure x

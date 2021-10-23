@@ -1,7 +1,8 @@
 
 updateVrf req -> Error string:
-    id = req.get "id" #| parseInt #
-    key = getPassFromHeader req #
-    vrf = json:decode req.body #
-    validate vrf #
-    saveVrf vrf
+    id = req.get "id" # | parseInt # ;
+    key = getPassFromHeader req # ;
+    vrf = json:decode req.body # ;
+    validate vrf # ;
+    saveVrf vrf ;
+;

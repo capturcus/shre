@@ -41,7 +41,8 @@ There are no reserved words in shre.
 
 The symbols used in shre are the following:
   | ; | -> | : | .
-  | ( | ) | | | #
+  | = | ( | ) | |
+  | # |  |  |
 
 ===Comments===
 There are no single-line comments in the grammar.There are no multiple-line comments in the grammar.
@@ -56,7 +57,7 @@ All other symbols are terminals.
   | //[Function]// | -> | **eps**
   |  |  **|**  | //Function//
   |  |  **|**  | //Function// ``;`` //[Function]//
-  | //Function// | -> | //Ident// //[FuncArgDecl]// ``->`` //Ident// ``:`` //[LetIn]//
+  | //Function// | -> | //Ident// //[FuncArgDecl]// ``->`` //[FuncArgDecl]// ``:`` //[LetIn]//
   |  |  **|**  | //Ident// //[FuncArgDecl]// ``:`` //[LetIn]//
   | //[FuncArgDecl]// | -> | **eps**
   |  |  **|**  | //FuncArgDecl// //[FuncArgDecl]//
@@ -68,19 +69,20 @@ All other symbols are terminals.
   | //[LetIn]// | -> | **eps**
   |  |  **|**  | //LetIn//
   |  |  **|**  | //LetIn// ``;`` //[LetIn]//
-  | //LetIn// | -> | //Ident//
+  | //LetIn// | -> | //Selector// ``=`` //Expr//
+  |  |  **|**  | //Expr//
   | //Expr// | -> | //Integer//
   |  |  **|**  | //Double//
   |  |  **|**  | //String//
-  |  |  **|**  | //FuncCall// //OptionalHash//
+  |  |  **|**  | //FuncCall//
   |  |  **|**  | ``(`` //Expr// ``)``
   |  |  **|**  | //Expr// ``|`` //Expr//
-  | //FuncCall// | -> | //Selector// //FuncCallArgList//
-  | //OptionalHash// | -> | **eps**
-  |  |  **|**  | ``#``
+  | //FuncCall// | -> | //Selector//
+  |  |  **|**  | //Selector// ``#``
+  |  |  **|**  | //Selector// //FuncCallArgList//
+  |  |  **|**  | //Selector// //FuncCallArgList// ``#``
   | //FuncCallArgList// | -> | //Expr// //FuncCallArgList//
   |  |  **|**  | //Expr//
-  |  |  **|**  | **eps**
 
 
 

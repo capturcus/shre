@@ -14,7 +14,7 @@ data Program = ProgramRoot [Function]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data Function
-    = Function1 Ident [FuncArgDecl] Ident [LetIn]
+    = Function1 Ident [FuncArgDecl] [FuncArgDecl] [LetIn]
     | Function2 Ident [FuncArgDecl] [LetIn]
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
@@ -37,21 +37,21 @@ data Expr
     = ExprInt Integer
     | ExprDouble Double
     | ExprString String
-    | ExprFuncCall FuncCall OptionalHash
+    | ExprFuncCall FuncCall
     | ExprParen Expr
     | ExprPipe Expr Expr
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
-data FuncCall = FuncCall1 Selector FuncCallArgList
-  deriving (C.Eq, C.Ord, C.Show, C.Read)
-
-data OptionalHash = OptionalHash1 | OptionalHash2
+data FuncCall
+    = FuncCall1 Selector FuncCallArgList
+    | FuncCall2 Selector FuncCallArgList
+    | FuncCall3 Selector
+    | FuncCallSelector Selector
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 data FuncCallArgList
     = FuncCallArgListContinue Expr FuncCallArgList
     | FuncCallArgListExpr Expr
-    | FuncCallArgListEnd
   deriving (C.Eq, C.Ord, C.Show, C.Read)
 
 newtype Ident = Ident String

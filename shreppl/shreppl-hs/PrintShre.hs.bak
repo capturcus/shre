@@ -151,7 +151,7 @@ instance Print [AbsShre.Function] where
 
 instance Print AbsShre.Function where
   prt i = \case
-    AbsShre.Function1 id_1 funcargdecls id_2 letins -> prPrec i 0 (concatD [prt 0 id_1, prt 0 funcargdecls, doc (showString "->"), prt 0 id_2, doc (showString ":"), prt 0 letins])
+    AbsShre.Function1 id_ funcargdecls1 funcargdecls2 letins -> prPrec i 0 (concatD [prt 0 id_, prt 0 funcargdecls1, doc (showString "->"), prt 0 funcargdecls2, doc (showString ":"), prt 0 letins])
     AbsShre.Function2 id_ funcargdecls letins -> prPrec i 0 (concatD [prt 0 id_, prt 0 funcargdecls, doc (showString ":"), prt 0 letins])
 
 instance Print [AbsShre.FuncArgDecl] where
@@ -179,28 +179,26 @@ instance Print [AbsShre.LetIn] where
 
 instance Print AbsShre.LetIn where
   prt i = \case
-    AbsShre.LetInIdent id_ -> prPrec i 0 (concatD [prt 0 id_])
+    AbsShre.LetIn1 selector expr -> prPrec i 0 (concatD [prt 0 selector, doc (showString "="), prt 0 expr])
+    AbsShre.LetInExpr expr -> prPrec i 0 (concatD [prt 0 expr])
 
 instance Print AbsShre.Expr where
   prt i = \case
     AbsShre.ExprInt n -> prPrec i 0 (concatD [prt 0 n])
     AbsShre.ExprDouble d -> prPrec i 0 (concatD [prt 0 d])
     AbsShre.ExprString str -> prPrec i 0 (concatD [printString str])
-    AbsShre.ExprFuncCall funccall optionalhash -> prPrec i 0 (concatD [prt 0 funccall, prt 0 optionalhash])
+    AbsShre.ExprFuncCall funccall -> prPrec i 0 (concatD [prt 0 funccall])
     AbsShre.ExprParen expr -> prPrec i 0 (concatD [doc (showString "("), prt 0 expr, doc (showString ")")])
     AbsShre.ExprPipe expr1 expr2 -> prPrec i 0 (concatD [prt 0 expr1, doc (showString "|"), prt 0 expr2])
 
 instance Print AbsShre.FuncCall where
   prt i = \case
-    AbsShre.FuncCall1 selector funccallarglist -> prPrec i 0 (concatD [prt 0 selector, prt 0 funccallarglist])
-
-instance Print AbsShre.OptionalHash where
-  prt i = \case
-    AbsShre.OptionalHash1 -> prPrec i 0 (concatD [])
-    AbsShre.OptionalHash2 -> prPrec i 0 (concatD [doc (showString "#")])
+    AbsShre.FuncCallSelector selector -> prPrec i 0 (concatD [prt 0 selector])
+    AbsShre.FuncCall1 selector -> prPrec i 0 (concatD [prt 0 selector, doc (showString "#")])
+    AbsShre.FuncCall2 selector funccallarglist -> prPrec i 0 (concatD [prt 0 selector, prt 0 funccallarglist])
+    AbsShre.FuncCall3 selector funccallarglist -> prPrec i 0 (concatD [prt 0 selector, prt 0 funccallarglist, doc (showString "#")])
 
 instance Print AbsShre.FuncCallArgList where
   prt i = \case
     AbsShre.FuncCallArgListContinue expr funccallarglist -> prPrec i 0 (concatD [prt 0 expr, prt 0 funccallarglist])
     AbsShre.FuncCallArgListExpr expr -> prPrec i 0 (concatD [prt 0 expr])
-    AbsShre.FuncCallArgListEnd -> prPrec i 0 (concatD [])

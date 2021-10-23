@@ -19,7 +19,6 @@ module ParShre
   , pLetIn
   , pExpr
   , pFuncCall
-  , pOptionalHash
   , pFuncCallArgList
   ) where
 
@@ -41,7 +40,6 @@ import LexShre
 %name pLetIn LetIn
 %name pExpr Expr
 %name pFuncCall FuncCall
-%name pOptionalHash OptionalHash
 %name pFuncCallArgList FuncCallArgList
 -- no lexer declaration
 %monad { Err } { (>>=) } { return }
@@ -86,7 +84,7 @@ ListFunction
 
 Function :: { AbsShre.Function }
 Function
-  : Ident ListFuncArgDecl '->' Ident ':' ListLetIn { AbsShre.Function1 $1 $2 $4 $6 }
+  : Ident ListFuncArgDecl '->' ListFuncArgDecl ':' ListLetIn { AbsShre.Function1 $1 $2 $4 $6 }
   | Ident ListFuncArgDecl ':' ListLetIn { AbsShre.Function2 $1 $2 $4 }
 
 ListFuncArgDecl :: { [AbsShre.FuncArgDecl] }
@@ -122,23 +120,21 @@ Expr
   : Integer { AbsShre.ExprInt $1 }
   | Double { AbsShre.ExprDouble $1 }
   | String { AbsShre.ExprString $1 }
-  | FuncCall OptionalHash { AbsShre.ExprFuncCall $1 $2 }
+  | FuncCall { AbsShre.ExprFuncCall $1 }
   | '(' Expr ')' { AbsShre.ExprParen $2 }
   | Expr '|' Expr { AbsShre.ExprPipe $1 $3 }
 
 FuncCall :: { AbsShre.FuncCall }
-FuncCall : Selector FuncCallArgList { AbsShre.FuncCall1 $1 $2 }
-
-OptionalHash :: { AbsShre.OptionalHash }
-OptionalHash
-  : {- empty -} { AbsShre.OptionalHash1 }
-  | '#' { AbsShre.OptionalHash2 }
+FuncCall
+  : Selector FuncCallArgList '#' { AbsShre.FuncCall1 $1 $2 }
+  | Selector FuncCallArgList { AbsShre.FuncCall2 $1 $2 }
+  | Selector '#' { AbsShre.FuncCall3 $1 }
+  | Selector { AbsShre.FuncCallSelector $1 }
 
 FuncCallArgList :: { AbsShre.FuncCallArgList }
 FuncCallArgList
   : Expr FuncCallArgList { AbsShre.FuncCallArgListContinue $1 $2 }
   | Expr { AbsShre.FuncCallArgListExpr $1 }
-  | {- empty -} { AbsShre.FuncCallArgListEnd }
 
 {
 
