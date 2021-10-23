@@ -14,4 +14,3 @@
 - parametric types
 - "it" lambda parameter
 - do notation / let in chains? separated by a char like #
-- iterators for infinite loops

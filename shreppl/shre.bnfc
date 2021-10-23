@@ -1,11 +1,27 @@
-rules Program ::= Function | Function Program ;
+ProgramRoot. Program ::= [Function] ;
 
-rules Function ::= Ident ArgList "->" Ident ":" LetIns ;
-rules ArgList ::= Ident | Ident ArgList ;
+separator Function ";" ;
 
-rules LetIns ::= LetIn OptionalHash "\n" | LetIn OptionalHash "\n" LetIns ;
-rules OptionalHash ::=  | "#" ;
+rules Function ::= Ident [FuncArgDecl] "->" Ident ":" [LetIn] | Ident [FuncArgDecl] ":" [LetIn] ;
+separator FuncArgDecl "";
+rules FuncArgDecl ::= Ident;
 
-rules LetIn ::= Ident "=" Expr | Expr ;
+rules StructSelector ::= Ident | StructSelector "." Ident ;
+rules Selector ::= StructSelector | Ident ":" StructSelector ;
 
-rules Expr ::= Ident | Integer | Double | String ;
+separator LetIn ";" ;
+
+rules LetIn ::= Selector "=" Expr | Expr ;
+
+ExprInt. Expr ::= Integer ;
+ExprDouble. Expr ::= Double ;
+ExprString. Expr ::= String ;
+ExprFuncCall. Expr ::= FuncCall OptionalHash ;
+ExprParen. Expr ::= "(" Expr ")" ;
+ExprPipe. Expr ::= Expr "|" Expr ;
+
+rules FuncCall ::= Selector FuncCallArgList  ;
+rules OptionalHash ::= | "#" ;
+FuncCallArgListContinue. FuncCallArgList ::= Expr FuncCallArgList ;
+FuncCallArgListExpr. FuncCallArgList ::= Expr ;
+FuncCallArgListEnd. FuncCallArgList ::= ;
