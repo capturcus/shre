@@ -8,4 +8,19 @@ function_other asd -> asd:;
 a = b #;
 siemka tasiemka #;
 siemka.get tasiemka.asd;
+a = match function arg {
+        Ok ( asd ) => print asd ,
+        Ok ( asd ) => print asd ;
+                print asd asd ;
+}
+;;
+struct siemka {
+        a : int ;
+        b : string ;
+        c : Error string ;
+}
 ;
+variant test {
+        Ok(asd);
+        Error(asd);
+}

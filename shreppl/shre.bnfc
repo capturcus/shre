@@ -1,10 +1,12 @@
-ProgramRoot. Program ::= [Function] ;
+ProgramRoot. Program ::= [TopLevelDeclaration] ;
 
-separator Function ";" ;
+separator TopLevelDeclaration ";" ;
 
 separator nonempty Ident "";
 
-rules Function ::= Ident [FuncArgDecl] "->" Type ":;" [LetIn] | Ident [FuncArgDecl] ":;" [LetIn] ;
+rules TopLevelDeclaration ::= FunctionDeclaration | StructDeclaration | VariantDeclaration ;
+
+rules FunctionDeclaration ::= Ident [FuncArgDecl] "->" Type ":;" [LetIn] | Ident [FuncArgDecl] ":;" [LetIn] ;
 separator nonempty FuncArgDecl "";
 rules FuncArgDecl ::= Ident | Ident ":" Type ;
 rules Type ::= Ident | Type Ident ;
@@ -12,8 +14,7 @@ rules Type ::= Ident | Type Ident ;
 rules StructSelector ::= Ident | StructSelector "." Ident ;
 
 rules PackageQualifier ::= 
-     "\\"
-    | PackageQualifier Ident "\\" ;
+    | PackageQualifier Ident "." ;
 
 rules Selector ::= PackageQualifier StructSelector | StructSelector ;
 
@@ -29,6 +30,9 @@ ExprString. Expr ::= String ;
 ExprFuncCall. Expr ::= FuncCall ;
 ExprParen. Expr ::= "(" Expr ")" ;
 ExprPipe. Expr ::= Expr "|" Expr ;
+ExprMatch. Expr ::= "match" Expr "{" [MatchArm] "}" ;
+separator MatchArm "," ;
+rules MatchArm ::= Ident "(" Ident ")" "=>" [LetIn];
 
 rules FuncCall ::= 
      Selector FuncCallArgList "#" 
@@ -37,3 +41,13 @@ rules FuncCall ::=
     | Selector ;
 FuncCallArgListContinue. FuncCallArgList ::= Expr FuncCallArgList ;
 FuncCallArgListExpr. FuncCallArgList ::= Expr ;
+
+rules StructDeclaration ::= "struct" Ident "{" [StructDeclarations] "}" ;
+rules StructDeclarations ::= Ident ":" Type ;
+separator StructDeclarations ";" ;
+
+rules VariantDeclaration ::= "variant" Ident "{" [VariantDeclarations] "}" ;
+
+rules VariantDeclarations ::= Ident "(" Type ")" ;
+separator VariantDeclarations ";" ;
+
