@@ -2,8 +2,6 @@ ProgramRoot. Program ::= [TopLevelDeclaration] ;
 
 separator TopLevelDeclaration ";" ;
 
-separator nonempty Ident "";
-
 rules TopLevelDeclaration ::= FunctionDeclaration | StructDeclaration | VariantDeclaration ;
 
 rules FunctionDeclaration ::= Ident [FuncArgDecl] "->" Type ":;" [LetIn] | Ident [FuncArgDecl] ":;" [LetIn] ;
@@ -24,13 +22,17 @@ rules LetIn ::=
       Selector "=" Expr
     | Expr ;
 
+ExprMatch. Expr ::= "match" Expr "{" [MatchArm] "}" ;
 ExprInt. Expr ::= Integer ;
 ExprDouble. Expr ::= Double ;
 ExprString. Expr ::= String ;
 ExprFuncCall. Expr ::= FuncCall ;
 ExprParen. Expr ::= "(" Expr ")" ;
 ExprPipe. Expr ::= Expr "|" Expr ;
-ExprMatch. Expr ::= "match" Expr "{" [MatchArm] "}" ;
+ExprSimpleLambda. Expr ::= "${" [LetIn] "}" ;
+ExprArrayElem. Expr ::= Expr "[" Expr "]" ;
+ExprArgumentedLambda. Expr ::= "$" [FuncArgDecl] "{" [LetIn] "}" ;
+
 separator MatchArm "," ;
 rules MatchArm ::= Ident "(" Ident ")" "=>" [LetIn];
 
@@ -50,4 +52,3 @@ rules VariantDeclaration ::= "variant" Ident "{" [VariantDeclarations] "}" ;
 
 rules VariantDeclarations ::= Ident "(" Type ")" ;
 separator VariantDeclarations ";" ;
-

@@ -24,3 +24,13 @@ variant test {
         Ok(asd);
         Error(asd);
 }
+;
+function test:;
+a = ${
+        a = b # ;
+        123
+};
+b = $ a b c {
+        a = b # ;
+        asd
+}
