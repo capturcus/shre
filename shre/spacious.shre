@@ -1,0 +1,18 @@
+function a b c:
+    a = b #
+    siemka tasiemka
+    match function arg1 arg2:
+        Ok asd:
+            print asd
+            print asdf
+        Error asd:
+            print asdasd
+
+struct Siemka:
+    a: int
+    b: string
+    c: Error string
+
+variant Test:
+    Ok: string
+    Error: string

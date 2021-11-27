@@ -1,12 +1,12 @@
 ProgramRoot. Program ::= [TopLevelDeclaration] ;
 
-separator TopLevelDeclaration ";" ;
+separator TopLevelDeclaration "ENDLINE" ;
 
 rules TopLevelDeclaration ::= FunctionDeclaration | StructDeclaration | VariantDeclaration ;
 
-rules FunctionDeclaration ::= Ident [FuncArgDecl] "->" Type ":;" [LetIn] | Ident [FuncArgDecl] ":;" [LetIn] ;
+rules FunctionDeclaration ::= Ident [FuncArgDecl] "->" Type ":" "ENDLINE" "INDENT" [LetIn] "DEDENT" | Ident [FuncArgDecl] ":" "ENDLINE" "INDENT" [LetIn] "DEDENT" ;
 separator nonempty FuncArgDecl "";
-rules FuncArgDecl ::= Ident | Ident ":" Type ;
+rules FuncArgDecl ::= Ident | Ident "~" Type ;
 rules Type ::= Ident | Type Ident ;
 
 rules StructSelector ::= Ident | StructSelector "." Ident ;
@@ -16,13 +16,13 @@ rules PackageQualifier ::=
 
 rules Selector ::= PackageQualifier StructSelector | StructSelector ;
 
-separator LetIn ";" ;
+separator LetIn "ENDLINE" ;
 
 rules LetIn ::= 
       Selector "=" Expr
     | Expr ;
 
-ExprMatch. Expr ::= "match" Expr "{" [MatchArm] "}" ;
+ExprMatch. Expr ::= "match" Expr ":" "ENDLINE" "INDENT" [MatchArm] "DEDENT" ;
 ExprInt. Expr ::= Integer ;
 ExprDouble. Expr ::= Double ;
 ExprString. Expr ::= String ;
@@ -33,8 +33,8 @@ ExprSimpleLambda. Expr ::= "${" [LetIn] "}" ;
 ExprArrayElem. Expr ::= Expr "[" Expr "]" ;
 ExprArgumentedLambda. Expr ::= "$" [FuncArgDecl] "{" [LetIn] "}" ;
 
-separator MatchArm "," ;
-rules MatchArm ::= Ident "(" Ident ")" "=>" [LetIn];
+separator MatchArm "" ;
+rules MatchArm ::= Ident Ident ":" "ENDLINE" "INDENT" [LetIn] "DEDENT" ; -- A variant name and the variable declaration, there will be deconstruction here later
 
 rules FuncCall ::= 
      Selector FuncCallArgList "#" 
@@ -44,11 +44,11 @@ rules FuncCall ::=
 FuncCallArgListContinue. FuncCallArgList ::= Expr FuncCallArgList ;
 FuncCallArgListExpr. FuncCallArgList ::= Expr ;
 
-rules StructDeclaration ::= "struct" Ident "{" [StructDeclarations] "}" ;
+rules StructDeclaration ::= "struct" Ident ":" "ENDLINE" "INDENT" [StructDeclarations] "DEDENT" ;
 rules StructDeclarations ::= Ident ":" Type ;
-separator StructDeclarations ";" ;
+separator StructDeclarations "ENDLINE" ;
 
-rules VariantDeclaration ::= "variant" Ident "{" [VariantDeclarations] "}" ;
+rules VariantDeclaration ::= "variant" Ident ":" "ENDLINE" "INDENT" [VariantDeclarations] "DEDENT" ;
 
-rules VariantDeclarations ::= Ident "(" Type ")" ;
-separator VariantDeclarations ";" ;
+rules VariantDeclarations ::= Ident ":" Type ;
+separator VariantDeclarations "ENDLINE" ;
